@@ -1,0 +1,11 @@
+*~
+*.swp
+*.tags*
+*.tmp*
+*.old
+*.pdf
+*.log
+.git
+.svn
+tags
+cscope.*

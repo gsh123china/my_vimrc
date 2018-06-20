@@ -1,0 +1,110 @@
+#!/bin/sh
+
+#
+# svnutil -- svn utilities
+#
+# Create : ZongQiang @ SDR
+# Update : 2010/03/02
+#
+
+
+
+[ "$1" = "" ] && {
+    echo "Usage: $0 rev_1 [rev_2 [rev_out]]"
+    exit 1
+}
+
+rev_diff1=$1
+rev_diff2=$2
+rev_out=$3
+date=$(date +%Y%m%d)
+
+list_changed_rev()
+{
+    svn log | grep '^r' | sed -e 's/r//' -e 's/ .*//'
+}
+
+get_url()
+{
+    svn info | grep '^URL' | awk '{print $2;}'
+}
+
+find_change_for_pattern()
+{
+    local arg=$1
+    local pat=${arg:-" "}
+    echo "REV: $(list_changed_rev | grep -v '^1$' | xargs)"
+    for rev in $(list_changed_rev | grep -v '^1$'); do
+        # display log if pattern found
+        svn di -c$rev | egrep ${pat} > /dev/null && svn log -c$rev
+        # display lines of pattern
+        svn di -c$rev | egrep ${pat}
+    done
+}
+
+
+do_diff()
+{
+#    svn diff --summarize -r${rev_diff1}:${rev_diff2} | grep -v '^D' | awk '{print $2;}'
+    # deleted may be needed to export to previouse revision...
+    svn diff --summarize -r${rev_diff1}:${rev_diff2} | awk '{print $2;}'
+}
+
+
+# list modified files between working copy and head revision
+do_diff_work_head()
+{
+    svn diff | grep '^Index:' | awk '{print $2;}'
+}
+
+do_export()
+{
+    local rev=$1
+    TDIR=temp.$date.r$rev
+    URL=$(get_url)
+    
+    mkdir -p $TDIR
+    for file in $(do_diff); do
+        [[ $file =~ "/" ]] && mkdir -p $TDIR/${file%/*}
+#        svn export -r $rev $URL/$file $TDIR/$file
+        svn export $URL/${file}@${rev} $TDIR/$file
+    done
+}
+
+do_export_head_diff_work()
+{
+    URL=$(get_url)
+
+    TDIR=temp.$date.rHEAD
+    mkdir -p $TDIR
+    for file in $(do_diff_work_head); do
+        [[ $file =~ "/" ]] && mkdir -p $TDIR/${file%/*}
+#        svn export -r $rev $URL/$file $TDIR/$file
+        svn export $URL/${file}@HEAD $TDIR/$file
+    done
+    
+    TDIR=temp.$date.rWORK
+    mkdir -p $TDIR
+    tar cf - $(do_diff_work_head) | ( cd $TDIR && tar xf - )
+}
+
+
+#find_change_for_pattern "$1"
+
+#exit
+
+## only one argument specified
+## export head revision files that diff with working copy
+[ "$rev_diff2" == "" ] && {
+    do_export_head_diff_work
+    exit
+}
+
+[ "$rev_out" == "" ] && {
+    rm -rf $rev_diff1 $rev_diff2
+    do_export $rev_diff1
+    do_export $rev_diff2
+} || {
+    rm -rf $rev_out
+    do_export $rev_out
+}
