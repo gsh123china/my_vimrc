@@ -452,6 +452,8 @@ set nowritebackup
      Plug 'vim-scripts/CmdlineComplete'
      Plug 'vim-scripts/a.vim'
 
+     Plug 'drmad/tmux-git', { 'dir': '~/.tmux-git' }
+
      Plug 'inkarkat/vim-mark' | Plug 'inkarkat/vim-ingo-library'
      " Unmanaged plugin (manually installed and updated)
      "Plug '~/.vim/my_plugins/mark-3.0.0'
@@ -462,12 +464,18 @@ set nowritebackup
    endif
 
    """"""""""""""""""""""""""""""
-   "fencview 4.8
-   "<F2>
-   "检测编码格式
+   " fencview 4.8
+   " <F2>
+   " 检测编码格式
    """"""""""""""""""""""""""""""
    let g:fencview_autodetect=0	"[=0]不自动检测 [=1]自动检测
    map <F2> :FencView<cr>
+
+   """"""""""""""""""""""""""""""
+   " a.vim
+   " :A
+   """"""""""""""""""""""""""""""
+   let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:..,sfr:../include,sfr:../inc,sfr:inc'
 
    """"""""""""""""""""""""""""""
    " taglist_45
@@ -595,18 +603,18 @@ endif
    "let g:mwDefaultHighlightingPalette = 'extended'
    "let g:mwDefaultHighlightingNum = 9
    let g:mwPalettes = {
-	 \   'mypalette': [
-	 \       { 'ctermbg':'187', 'ctermfg':'Black', 'guibg':'#d7d7af', 'guifg':'Black' },
-	 \       { 'ctermbg':'150', 'ctermfg':'Black', 'guibg':'#afd787', 'guifg':'Black' },
-	 \       { 'ctermbg':'117', 'ctermfg':'Black', 'guibg':'#87d7ff', 'guifg':'Black' },
-	 \       { 'ctermbg':'108', 'ctermfg':'Black', 'guibg':'#90a99d', 'guifg':'Black' },
-	 \       { 'ctermbg':'176', 'ctermfg':'Black', 'guibg':'#ae81c5', 'guifg':'Black' },
-	 \       { 'ctermbg':'203', 'ctermfg':'Black', 'guibg':'#e97877', 'guifg':'Black' },
-	 \       { 'ctermbg':'147', 'ctermfg':'Black', 'guibg':'#afafff', 'guifg':'Black' },
-	 \       { 'ctermbg':'077', 'ctermfg':'Black', 'guibg':'#86c6b5', 'guifg':'Black' },
-	 \       { 'ctermbg':'068', 'ctermfg':'Black', 'guibg':'#5f87d7', 'guifg':'Black' },
-	 \   ]
-	 \}
+        \   'mypalette': [
+        \       { 'ctermbg':'187', 'ctermfg':'Black', 'guibg':'#d7d7af', 'guifg':'Black' },
+        \       { 'ctermbg':'150', 'ctermfg':'Black', 'guibg':'#afd787', 'guifg':'Black' },
+        \       { 'ctermbg':'117', 'ctermfg':'Black', 'guibg':'#87d7ff', 'guifg':'Black' },
+        \       { 'ctermbg':'108', 'ctermfg':'Black', 'guibg':'#90a99d', 'guifg':'Black' },
+        \       { 'ctermbg':'176', 'ctermfg':'Black', 'guibg':'#ae81c5', 'guifg':'Black' },
+        \       { 'ctermbg':'203', 'ctermfg':'Black', 'guibg':'#e97877', 'guifg':'Black' },
+        \       { 'ctermbg':'147', 'ctermfg':'Black', 'guibg':'#afafff', 'guifg':'Black' },
+        \       { 'ctermbg':'077', 'ctermfg':'Black', 'guibg':'#86c6b5', 'guifg':'Black' },
+        \       { 'ctermbg':'068', 'ctermfg':'Black', 'guibg':'#5f87d7', 'guifg':'Black' },
+        \   ]
+        \}
 
    " Make it the default
    let g:mwDefaultHighlightingPalette = 'mypalette'
@@ -637,6 +645,11 @@ endif
 
    "If you want to use plain ascii symbols, set this variable:
    let g:airline_symbols_ascii = 1
+
+   "spaces are allowed after tabs, but not in between
+   "this algorithm works well with programming styles that use tabs for
+   "indentation and spaces for alignment
+   let g:airline#extensions#whitespace#mixed_indent_algo = 2
 
    """"""""""""""""""""""""""""""
    " Ack.vim
