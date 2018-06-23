@@ -1,6 +1,10 @@
 alias tmux='TERM=xterm-256color tmux'
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
-if [[ $TMUX ]]; then
+if [[ ${TMUX} ]]; then
 	source ~/.tmux-git/tmux-git.sh
+fi
+
+if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
+  export PATH="$PATH:${HOME}/bin"
 fi
