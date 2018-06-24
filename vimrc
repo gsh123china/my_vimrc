@@ -698,3 +698,9 @@ endif
    "# tmuxline.vim
    "source-file ~/.tmux/tmuxline.conf
    " --------------------
+
+   """"""""""""""""""""""""""""""
+   " vim-easy-align
+   """"""""""""""""""""""""""""""
+   " Start interactive EasyAlign in visual mode (e.g. vip,a)
+   xmap <Leader>a <Plug>(EasyAlign)
