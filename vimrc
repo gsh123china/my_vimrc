@@ -432,6 +432,7 @@ set nowritebackup
      endif
      endfunction
      Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
      " Multiple Plug commands can be written in a single line using | separators
      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
