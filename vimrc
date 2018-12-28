@@ -580,7 +580,7 @@ if MySys() == "linux"
    "提示Doc
    nnoremap <leader>gd :YcmCompleter GetDoc<CR>
    "自动修正
-   nnoremap <leader>fx :YcmCompleter FixIt<CR>
+   nnoremap <leader>fi :YcmCompleter FixIt<CR>
    "打开location-list来显示警告和错误的信息
    nmap <F4> :YcmDiags<CR>
    "YCM启用白名单
