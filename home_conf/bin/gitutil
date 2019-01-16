@@ -34,5 +34,9 @@ fi
 #export hash_1 files
 git archive --format=tar --prefix=${hash_1}_${date}/ ${hash_1} ${file_list} | tar xvf -
 
-#export hash_1 files
+#export hash_2 files
 git archive --format=tar --prefix=${hash_2}_${date}/ ${hash_2} ${file_list} | tar xvf -
+
+#make symbolic links
+ln -s ${hash_1}_${date} ${hash_1}
+ln -s ${hash_2}_${date} ${hash_2}
