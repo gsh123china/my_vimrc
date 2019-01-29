@@ -6,16 +6,17 @@ alias j='jobs'
 alias tmux='TERM=xterm-256color tmux'
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
+if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
+	export PATH="${PATH}:${HOME}/bin"
+fi
+
+# tmux-git
 if [[ ${TMUX} ]]; then
 	source ~/.tmux-git/tmux-git.sh
 fi
 
-if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
-	export PATH="$PATH:${HOME}/bin"
-fi
-
 # check command return value
-PROMPT_COMMAND=__prompt_command # Func to gen PS1 after CMDs
+PROMPT_COMMAND="__prompt_command; ${PROMPT_COMMAND}" # __prompt_command must be placed in the first
 
 __prompt_command() {
 	local EXIT="$?"				# This needs to be first
@@ -30,7 +31,7 @@ __prompt_command() {
 
 	PS1="${BGre}\u@\h${RCol}:${BBlu}\w${RCol}"
 
-	if [ $EXIT != 0 ]; then
+	if [ ${EXIT} != 0 ]; then
 		PS1+="${BPur}\$ ${RCol}"	  # Add red if exit code non 0
 	else
 		PS1+="${BCol}\$ ${RCol}"
