@@ -555,6 +555,7 @@ if MySys() == "linux"
    let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项
    let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
    let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
+   let g:ycm_max_diagnostics_to_display = 100 " 显示ERROR和WARNING的上限数量
    "force recomile with syntastic
    nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
    nnoremap <leader>lo :lopen<CR>	"open locationlist
