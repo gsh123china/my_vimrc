@@ -28,7 +28,7 @@ __prompt_command() {
 	local BBlu='\[\e[1;34m\]'
 	local BPur='\[\e[1;35m\]'
 
-	PS1="${BGre}\u@\h${RCol}:${BBlu}\W${RCol}"
+	PS1="${BGre}\u@\h${RCol}:${BBlu}\w${RCol}"
 
 	if [ $EXIT != 0 ]; then
 		PS1+="${BPur}\$ ${RCol}"	  # Add red if exit code non 0
