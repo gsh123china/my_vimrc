@@ -26,16 +26,17 @@ fi
 
 # get changed list
 if [[ ${sub_dir[@]} -ne 0 ]]; then
-	declare -a file_list=$(git diff --name-only ${hash_1} ${hash_2} ${sub_dir})
+	declare -a file_list=$(git diff --name-only ${hash_1} ${hash_2} ${sub_dir}) # @todo
 else
-	declare -a file_list=$(git diff --name-only ${hash_1} ${hash_2})
+	declare -a file_list_1=$(git diff --name-status ${hash_1} ${hash_2} | grep -v "^A" | cut -f 2)
+	declare -a file_list_2=$(git diff --name-status ${hash_1} ${hash_2} | grep -v "^D" | cut -f 2)
 fi
 
 #export hash_1 files
-git archive --format=tar --prefix=${hash_1}_${date}/ ${hash_1} ${file_list} | tar xvf -
+git archive --format=tar --prefix=${hash_1}_${date}/ ${hash_1} ${file_list_1} | tar xvf -
 
 #export hash_2 files
-git archive --format=tar --prefix=${hash_2}_${date}/ ${hash_2} ${file_list} | tar xvf -
+git archive --format=tar --prefix=${hash_2}_${date}/ ${hash_2} ${file_list_2} | tar xvf -
 
 #make symbolic links
 ln -s ${hash_1}_${date} ${hash_1}
