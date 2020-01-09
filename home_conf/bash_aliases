@@ -10,6 +10,10 @@ alias svndiff='svn diff --diff-cmd diffwrap.sh'
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo='sudo '
 
+if [[ `uname -r` == *Microsoft* ]]; then
+	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://127.0.0.1:10808/\""
+fi
+
 if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
 	export PATH="${PATH}:${HOME}/bin"
 fi
