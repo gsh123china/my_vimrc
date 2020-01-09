@@ -6,6 +6,10 @@ alias j='jobs'
 alias tmux='TERM=xterm-256color tmux'
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
+# Fix aliases not available when using sudo
+# https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+alias sudo='sudo '
+
 if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
 	export PATH="${PATH}:${HOME}/bin"
 fi
