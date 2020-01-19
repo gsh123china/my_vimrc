@@ -14,6 +14,8 @@ if [[ `uname -r` == *Microsoft* ]]; then
 	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://127.0.0.1:10808/\""
 elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://10.192.174.125:10808/\""
+	export http_proxy=http://gsh:http-password@10.192.174.125:10810/
+	export https_proxy=$http_proxy
 fi
 
 if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
