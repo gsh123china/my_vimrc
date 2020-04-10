@@ -440,7 +440,6 @@ set nowritebackup
      Plug 'jiangmiao/auto-pairs'
 
      Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-     "Plug 'edkolev/tmuxline.vim'
 
      Plug 'mileszs/ack.vim'
      Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -456,9 +455,8 @@ set nowritebackup
      Plug 'drmad/tmux-git', { 'dir': '~/.tmux-git' }
 
      Plug 'inkarkat/vim-mark' | Plug 'inkarkat/vim-ingo-library'
-     " Unmanaged plugin (manually installed and updated)
-     "Plug '~/.vim/my_plugins/mark-3.0.0'
-     "    https://www.vim.org/scripts/script.php?script_id=2666
+
+     Plug 'dense-analysis/ale'
 
      " Initialize plugin system
      call plug#end()
@@ -706,3 +704,31 @@ endif
    """"""""""""""""""""""""""""""
    " Start interactive EasyAlign in visual mode (e.g. vip,a)
    xmap <Leader>a <Plug>(EasyAlign)
+
+   """"""""""""""""""""""""""""""
+   " Ale
+   """"""""""""""""""""""""""""""
+   " Need to install the check tool in PATH (exp:cppcheck, clang)
+   "  % sudo apt-get install clang cppcheck
+   """"""""""""""""""""""""""""""
+   let g:ale_linters_explicit = 1
+   let g:ale_completion_delay = 500
+   let g:ale_echo_delay = 20
+   let g:ale_lint_delay = 500
+   let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+   let g:ale_lint_on_text_changed = 'normal'
+   let g:ale_lint_on_insert_leave = 1
+   let g:airline#extensions#ale#enabled = 1
+
+   let g:ale_linters = {
+	 \ 'cpp': ['clang', 'cppcheck'],
+   	 \ 'c': ['clang', 'cppcheck'],
+   	 \ 'csh': ['shell'],
+   	 \ 'bash': ['shell'],
+   	 \ }
+   "let g:ale_c_gcc_options = '-Wall -std=c99'
+   "let g:ale_cpp_gcc_options = '-Wall -std=c++98'
+   let g:ale_c_clang_options = '-Wall -std=c99'
+   let g:ale_cpp_clang_options = '-Wall -std=c++98'
+   let g:ale_c_cppcheck_options = ''
+   let g:ale_cpp_cppcheck_options = ''
