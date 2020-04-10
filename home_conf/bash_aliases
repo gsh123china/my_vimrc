@@ -53,3 +53,6 @@ __prompt_command() {
 		PS1+="${BCol}\$ ${RCol}"
 	fi
 }
+
+# enable core-dump
+ulimit -c unlimited
