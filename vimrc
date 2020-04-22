@@ -487,12 +487,18 @@ set nowritebackup
    nmap <silent> <F3> :Tlist<cr>
 
    """"""""""""""""""""""""""""""
-   " Exuberant Ctags 5.8
+   " Universal-ctags
+   " https://github.com/universal-ctags/ctags
+   " Build and Install:
+   "  % ./autogen.sh
+   "  % ./configure --prefix=/home/gsh/opt
    """"""""""""""""""""""""""""""
    " cscope 15.7
    """"""""""""""""""""""""""""""
-   "在当前目录下查找tags文件,若没有则递归向上查找
-   set tags=tags;
+   set tags=./tags;,tags
+   "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
+   "后面一个分号代表查找不到的话向上递归到父目录，直到找到tags文件或者递归到了根目录还没找到。
+   "逗号分隔的后半部分tags是指同时在Vim的当前目录(":pwd"命令返回的目录,可以用:cd .. 命令改变)下面查找tags文件。
    if has("cscope")
      "同时搜索ctags和cscope的标签,并且cscope优先扫描
      set cscopequickfix=s-,c-,d-,i-,t-,e-
@@ -502,7 +508,8 @@ set nowritebackup
    endif
    function! Mk_tag()
      if executable('ctags')
-       silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q'
+       " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
+       silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSz --extras=+q --output-format=e-ctags'
      endif
      if(executable('cscope') && has("cscope"))
        if MySys() == "windows"
