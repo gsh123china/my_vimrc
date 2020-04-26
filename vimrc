@@ -428,7 +428,8 @@ set nowritebackup
      " - status: 'installed', 'updated', or 'unchanged'
      " - force:  set on PlugInstall! or PlugUpdate!
      if a:info.status == 'installed' || a:info.force
-       !./install.py --clang-completer
+       !./install.py --clang-completer		" libclang
+       "!./install.py --clangd-completer		" clangd lsp server
      endif
      endfunction
      Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
@@ -437,7 +438,7 @@ set nowritebackup
      " Multiple Plug commands can be written in a single line using | separators
      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-     Plug 'jiangmiao/auto-pairs'
+     "Plug 'jiangmiao/auto-pairs'
 
      Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
@@ -457,6 +458,12 @@ set nowritebackup
      Plug 'inkarkat/vim-mark' | Plug 'inkarkat/vim-ingo-library'
 
      Plug 'dense-analysis/ale'
+
+     Plug 'ludovicchabant/vim-gutentags'
+
+     Plug 'skywind3000/vim-preview'
+
+     "Plug 'Shougo/echodoc.vim'
 
      " Initialize plugin system
      call plug#end()
@@ -487,42 +494,90 @@ set nowritebackup
    nmap <silent> <F3> :Tlist<cr>
 
    """"""""""""""""""""""""""""""
+   " vim-gutentags
+   " gutentags_plus
+   """"""""""""""""""""""""""""""
+   " GLOBAL (gtags)
+   " $ sudo apt-get install global
+   """"""""""""""""""""""""""""""
    " Universal-ctags
    " https://github.com/universal-ctags/ctags
    " Build and Install:
    "  % ./autogen.sh
    "  % ./configure --prefix=/home/gsh/opt
    """"""""""""""""""""""""""""""
-   " cscope 15.7
-   """"""""""""""""""""""""""""""
-   set tags=./tags;,tags
-   "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
-   "后面一个分号代表查找不到的话向上递归到父目录，直到找到tags文件或者递归到了根目录还没找到。
-   "逗号分隔的后半部分tags是指同时在Vim的当前目录(":pwd"命令返回的目录,可以用:cd .. 命令改变)下面查找tags文件。
-   if has("cscope")
+   let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.h '
+   "允许 gutentags 打开一些高级命令和选项(调试时用)
+"  let g:gutentags_define_advanced_commands = 1
+"  " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+"  " gutentags 需要确定当前文件所属的项目目录，会从当前文件所在目录开始向父目录递归，直到找到这些标志文件。
+"  " 如果没有，则 gutentags 认为该文件是个野文件，不会帮它生成 ctags/gtags 数据，这也很合理，
+"  " 所以如果你的项目不在 svn/git/hg 仓库中的话，可以在项目根目录 touch 一个空的名为 .root 的文件即可。
+   "let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project', '.ycm_extra_conf.py']
+   let g:gutentags_add_default_project_roots = 0
+   let g:gutentags_project_root = ['.root', '.ycm_extra_conf.py']
+   " 所生成的数据文件的名称
+   let g:gutentags_ctags_tagfile = 'tags'
+   " 同时开启 ctags 和 gtags 支持：
+   let g:gutentags_modules = []
+   if executable('ctags')
+   	let g:gutentags_modules += ['ctags']
+   endif
+   if executable('cscope')
+   	let g:gutentags_modules += ['cscope']
+   endif
+   " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+   let s:vim_tags = expand('~/.cache/tags')
+   let g:gutentags_cache_dir = s:vim_tags
+   " 检测 ~/.cache/tags 不存在就新建
+   if !isdirectory(s:vim_tags)
+        silent! call mkdir(s:vim_tags, 'p')
+   endif
+   " 配置 ctags 的参数，老的 Exuberant-ctags 不能有 --extra=+q，注意
+   let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+   let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+   let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+   " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
+   let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+   if executable("cscope")
      "同时搜索ctags和cscope的标签,并且cscope优先扫描
-     set cscopequickfix=s-,c-,d-,i-,t-,e-
+     set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
      set csto=0
      set cst
-     set csverb
    endif
-   function! Mk_tag()
-     if executable('ctags')
-       " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
-       silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSz --extras=+q --output-format=e-ctags'
-     endif
-     if(executable('cscope') && has("cscope"))
-       if MySys() == "windows"
-         silent! execute '!dir /a:-d-s-h/b/s *.c,*.cpp,*.h,*.java,*.cs > cscope.files'
-       elseif MySys() == "linux"
-         silent! execute "!find `pwd` -type f -name '*.c' -o -name '*.cpp' -o -name '*.h' > cscope.files"
-       endif
-       execute 'cs kill -1'
-       silent! execute '!cscope -bkq'
-       execute 'cs add cscope.out'
-     endif
-   endfunction
-   nmap <silent> <leader>mt :call Mk_tag()<cr>
+
+   """"""""""""""""""""""""""""""
+   " cscope 15.7
+   """"""""""""""""""""""""""""""
+"  set tags=./tags;,tags
+"  "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
+"  "后面一个分号代表查找不到的话向上递归到父目录，直到找到tags文件或者递归到了根目录还没找到。
+"  "逗号分隔的后半部分tags是指同时在Vim的当前目录(":pwd"命令返回的目录,可以用:cd .. 命令改变)下面查找tags文件。
+"  if has("cscope")
+"    "同时搜索ctags和cscope的标签,并且cscope优先扫描
+"    set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
+"    set csto=0
+"    set cst
+"    set csverb
+"  endif
+"  function! Mk_tag()
+"    if executable('ctags')
+"      " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
+"      silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSz --extras=+q --output-format=e-ctags'
+"    endif
+"    if(executable('cscope') && has("cscope"))
+"      if MySys() == "windows"
+"        silent! execute '!dir /a:-d-s-h/b/s *.c,*.cpp,*.h,*.java,*.cs > cscope.files'
+"      elseif MySys() == "linux"
+"        silent! execute "!find `pwd` -type f -name '*.c' -o -name '*.cpp' -o -name '*.h' > cscope.files"
+"      endif
+"      execute 'cs kill -1'
+"      silent! execute '!cscope -bkq'
+"      execute 'cs add cscope.out'
+"    endif
+"  endfunction
+"  nmap <silent> <leader>mt :call Mk_tag()<cr>
    """"""""""""""""""""""""""""""
    " cscope maps
    """"""""""""""""""""""""""""""
@@ -534,6 +589,13 @@ set nowritebackup
    nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>	"查找本 egrep 模式
    nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>	"查找本文件
    nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>	"查找包含本文件的文件
+   nmap <C-@>a :cs find a <C-R>=expand("<cword>")<CR><CR>:copen<CR>	"查找本 C 符号(可以跳过注释)
+
+   """"""""""""""""""""""""""""""
+   " vim-preview
+   """"""""""""""""""""""""""""""
+   noremap <F7> :PreviewSignature!<cr>
+   inoremap <F7> <c-\><c-o>:PreviewSignature!<cr>
 
    """"""""""""""""""""""""""""""
    " YouCompleteMe
@@ -546,15 +608,15 @@ if MySys() == "linux"
    set completeopt-=preview
    autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
    "上下左右键的行为 会显示其他信息
-   inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-   inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-   inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-   inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+"  inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+"  inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+"  inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+"  inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
    "youcompleteme  默认tab  s-tab 和自动补全冲突
    "let g:ycm_key_list_select_completion=['<c-n>']
-   let g:ycm_key_list_select_completion = ['<Down>']
+   "let g:ycm_key_list_select_completion = ['<Down>']
    "let g:ycm_key_list_previous_completion=['<c-p>']
-   let g:ycm_key_list_previous_completion = ['<Up>']
+   "let g:ycm_key_list_previous_completion = ['<Up>']
    let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
    let g:ycm_collect_identifiers_from_tags_files=1	"开启 YCM 基于标签引擎
    let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项
@@ -591,6 +653,8 @@ if MySys() == "linux"
    nmap <F4> :YcmDiags<CR>
    "YCM启用白名单
    let g:ycm_filetype_whitelist = { "c":1, "cpp":1, "sh":1, }
+   let g:ycm_add_preview_to_completeopt = 1
+   let g:ycm_autoclose_preview_window_after_completion = 1
 endif
 
    """"""""""""""""""""""""""""""
@@ -728,14 +792,30 @@ endif
    let g:airline#extensions#ale#enabled = 1
 
    let g:ale_linters = {
-	 \ 'cpp': ['clang', 'cppcheck'],
-   	 \ 'c': ['clang', 'cppcheck'],
+         \ 'cpp': ['cppcheck'],
+   	 \ 'c': ['cppcheck'],
    	 \ 'csh': ['shell'],
    	 \ 'bash': ['shell'],
    	 \ }
+"  let g:ale_linters = {
+"        \ 'cpp': ['clang', 'cppcheck'],
+"  	 \ 'c': ['clang', 'cppcheck'],
+"  	 \ 'csh': ['shell'],
+"  	 \ 'bash': ['shell'],
+"  	 \ }
    "let g:ale_c_gcc_options = '-Wall -std=c99'
    "let g:ale_cpp_gcc_options = '-Wall -std=c++98'
-   let g:ale_c_clang_options = '-Wall -std=c99'
-   let g:ale_cpp_clang_options = '-Wall -std=c++98'
+   "let g:ale_c_clang_options = '-Wall -std=c99'
+   "let g:ale_cpp_clang_options = '-Wall -std=c++98'
    let g:ale_c_cppcheck_options = ''
    let g:ale_cpp_cppcheck_options = ''
+
+   """"""""""""""""""""""""""""""
+   " echodoc.vim
+   """"""""""""""""""""""""""""""
+   " To use echodoc, you must increase 'cmdheight' value.
+   "set cmdheight=2
+   "set noshowmode
+   "let g:echodoc_enable_at_startup = 1
+   " Or, you could disable showmode alltogether.
+   "let g:echodoc_enable_at_startup = 1

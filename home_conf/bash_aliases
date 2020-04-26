@@ -18,8 +18,10 @@ elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 	alias apt="apt -o Acquire::http::proxy=\"socks5h://10.192.174.125:10808/\""
 	#export http_proxy=http://gsh:http-password@10.192.174.125:10810/
 	#export https_proxy=$http_proxy
-	export ALL_PROXY=socks5h://10.192.174.125:10808
-	export all_proxy=socks5h://10.192.174.125:10808
+	#export ALL_PROXY=socks5h://10.192.174.125:10808
+	#export all_proxy=$ALL_PROXY
+	export ALL_PROXY=http://gsh:http-password@10.192.174.125:10810/
+	export all_proxy=$ALL_PROXY
 fi
 
 if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
