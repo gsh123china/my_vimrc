@@ -463,7 +463,11 @@ set nowritebackup
 
      Plug 'skywind3000/vim-preview'
 
-     "Plug 'Shougo/echodoc.vim'
+     Plug 'Shougo/echodoc.vim'
+
+     Plug 'tpope/vim-unimpaired'
+
+     Plug 'octol/vim-cpp-enhanced-highlight'
 
      " Initialize plugin system
      call plug#end()
@@ -620,7 +624,7 @@ if MySys() == "linux"
    let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
    let g:ycm_collect_identifiers_from_tags_files=1	"开启 YCM 基于标签引擎
    let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项
-   let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
+   "let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
    let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
    let g:ycm_max_diagnostics_to_display = 100 " 显示ERROR和WARNING的上限数量
    "force recomile with syntastic
@@ -815,7 +819,7 @@ endif
    """"""""""""""""""""""""""""""
    " To use echodoc, you must increase 'cmdheight' value.
    "set cmdheight=2
-   "set noshowmode
-   "let g:echodoc_enable_at_startup = 1
+   set noshowmode
+   let g:echodoc_enable_at_startup = 1
    " Or, you could disable showmode alltogether.
    "let g:echodoc_enable_at_startup = 1
