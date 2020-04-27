@@ -436,6 +436,8 @@ set nowritebackup
      Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
      " Multiple Plug commands can be written in a single line using | separators
+     " ultisnips是引擎
+     " 所有常用snippet都在vim-snippets里
      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
      "Plug 'jiangmiao/auto-pairs'
@@ -538,7 +540,7 @@ set nowritebackup
         silent! call mkdir(s:vim_tags, 'p')
    endif
    " 配置 ctags 的参数，老的 Exuberant-ctags 不能有 --extra=+q，注意
-   let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+   let g:gutentags_ctags_extra_args = ['--fields=+niazSl', '--extra=+q']
    let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
    let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
    " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
@@ -568,7 +570,7 @@ set nowritebackup
 "  function! Mk_tag()
 "    if executable('ctags')
 "      " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
-"      silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSz --extras=+q --output-format=e-ctags'
+"      silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSzl --extras=+q --output-format=e-ctags'
 "    endif
 "    if(executable('cscope') && has("cscope"))
 "      if MySys() == "windows"
@@ -614,26 +616,27 @@ if MySys() == "linux"
    set completeopt-=preview
    autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
    "上下左右键的行为 会显示其他信息
-"  inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-"  inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-"  inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-"  inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+   "inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+   "inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+   "inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+   "inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
    "youcompleteme  默认tab  s-tab 和自动补全冲突
-   "let g:ycm_key_list_select_completion=['<c-n>']
-   "let g:ycm_key_list_select_completion = ['<Down>']
-   "let g:ycm_key_list_previous_completion=['<c-p>']
-   "let g:ycm_key_list_previous_completion = ['<Up>']
+   let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+   let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
    let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
    let g:ycm_collect_identifiers_from_tags_files=1	"开启 YCM 基于标签引擎
    let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
    let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
    let g:ycm_max_diagnostics_to_display = 100 " 显示ERROR和WARNING的上限数量
    let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项,自动弹出的是基于符号的补全(当前所有 buffer 中收集到的符号)，不是基于语义的补全
+   let g:ycm_key_invoke_completion = '<C-l>' " 主动语义补全从<C-Space> 变为<C-l> 防止与输入法冲突
+
    " 从第2个键入字符就开始基于语义补全
-   let g:ycm_semantic_triggers = {
-			  \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-			  \ 'cs,lua,javascript': ['re!\w{2}'],
-			  \ }
+   "let g:ycm_semantic_triggers = {
+   "    \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{3}'],
+   "    \ 'cs,lua,javascript': ['re!\w{3}'],
+   "    \ }
+
    "force recomile with syntastic
    nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
    nnoremap <leader>lo :lopen<CR>	"open locationlist
@@ -644,7 +647,9 @@ if MySys() == "linux"
    "在字符串输入中也能补全
    "let g:ycm_complete_in_strings = 1
    "注释和字符串中的文字也会被收入补全
-   "let g:ycm_collect_identifiers_from_comments_and_strings = 0
+   "TAGS中的记录也会被收入补全
+   "When this option is set to '1', YCM's identifier completer will also collect identifiers from tags files.
+   let g:ycm_collect_identifiers_from_tags_files = 1
    "Warning and Error's symbols
    let g:ycm_error_symbol = '>>'
    let g:ycm_warning_symbol = '>*'
@@ -672,8 +677,7 @@ endif
    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
    let g:UltiSnipsExpandTrigger="<c-j>"
    let g:UltiSnipsJumpForwardTrigger="<tab>"
-   let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
+   let g:UltiSnipsJumpBackwardTrigger="<c-k>"
    " If you want :UltiSnipsEdit to split your window.
    let g:UltiSnipsEditSplit="vertical"
 
