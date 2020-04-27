@@ -625,10 +625,15 @@ if MySys() == "linux"
    "let g:ycm_key_list_previous_completion = ['<Up>']
    let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
    let g:ycm_collect_identifiers_from_tags_files=1	"开启 YCM 基于标签引擎
-   let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项
    let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
    let g:ycm_seed_identifiers_with_syntax=1	" 语法关键字补全
    let g:ycm_max_diagnostics_to_display = 100 " 显示ERROR和WARNING的上限数量
+   let g:ycm_min_num_of_chars_for_completion=2	" 从第2个键入字符就开始罗列匹配项,自动弹出的是基于符号的补全(当前所有 buffer 中收集到的符号)，不是基于语义的补全
+   " 从第2个键入字符就开始基于语义补全
+   let g:ycm_semantic_triggers = {
+			  \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			  \ 'cs,lua,javascript': ['re!\w{2}'],
+			  \ }
    "force recomile with syntastic
    nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
    nnoremap <leader>lo :lopen<CR>	"open locationlist
@@ -817,10 +822,6 @@ endif
    """"""""""""""""""""""""""""""
    " echodoc.vim
    """"""""""""""""""""""""""""""
-   " To use echodoc, you must increase 'cmdheight' value.
-   "set cmdheight=2
    set noshowmode
    let g:echodoc_enable_at_startup = 1
-   " Or, you could disable showmode alltogether.
-   "let g:echodoc_enable_at_startup = 1
-   "autocmd CompleteDone * echomsg string(v:completed_item)
+   "autocmd CompleteDone * echomsg string(v:completed_item) " display v:completed_item for debug echodoc
