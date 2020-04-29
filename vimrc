@@ -508,22 +508,19 @@ set nowritebackup
    " vim-gutentags
    " gutentags_plus
    """"""""""""""""""""""""""""""
-   " GLOBAL (gtags)
-   " $ sudo apt-get install global
-   """"""""""""""""""""""""""""""
    " Universal-ctags
    " https://github.com/universal-ctags/ctags
-   " Build and Install:
+   " Need Build and Install:
    "  % ./autogen.sh
    "  % ./configure --prefix=/home/gsh/opt
    """"""""""""""""""""""""""""""
    let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.h '
    "允许 gutentags 打开一些高级命令和选项(调试时用)
-"  let g:gutentags_define_advanced_commands = 1
-"  " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-"  " gutentags 需要确定当前文件所属的项目目录，会从当前文件所在目录开始向父目录递归，直到找到这些标志文件。
-"  " 如果没有，则 gutentags 认为该文件是个野文件，不会帮它生成 ctags/gtags 数据，这也很合理，
-"  " 所以如果你的项目不在 svn/git/hg 仓库中的话，可以在项目根目录 touch 一个空的名为 .root 的文件即可。
+   "let g:gutentags_define_advanced_commands = 1
+   " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+   " gutentags 需要确定当前文件所属的项目目录，会从当前文件所在目录开始向父目录递归，直到找到这些标志文件。
+   " 如果没有，则 gutentags 认为该文件是个野文件，不会帮它生成 ctags/gtags 数据，这也很合理，
+   " 所以如果你的项目不在 svn/git/hg 仓库中的话，可以在项目根目录 touch 一个空的名为 .root 的文件即可。
    "let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project', '.ycm_extra_conf.py']
    let g:gutentags_add_default_project_roots = 0
    let g:gutentags_project_root = ['.root', '.ycm_extra_conf.py']
