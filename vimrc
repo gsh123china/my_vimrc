@@ -215,6 +215,11 @@ if !exists(":DiffOrig")
     \ | wincmd p | diffthis
 endif
 
+" Vim sudo write
+if !exists(":Sw")
+  command Sw w !sudo tee %
+endif
+
 "Enable filetype plugin
 filetype plugin on
 
