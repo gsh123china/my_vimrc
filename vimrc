@@ -612,7 +612,7 @@ set nowritebackup
    """"""""""""""""""""""""""""""
 if MySys() == "linux"
    " 全局配置文件使用默认自带(在具体的项目中，可在项目的根目录中放一个.ycm_extra_conf.py，并且加上头文件目录的配置)
-   "let g:ycm_global_ycm_extra_conf='/home/gsh/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+   "let g:ycm_global_ycm_extra_conf=expand('~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py')
    " 自动补全配置
    set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
    set completeopt-=preview
