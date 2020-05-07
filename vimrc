@@ -513,6 +513,7 @@ set nowritebackup
    " Need Build and Install:
    "  % ./autogen.sh
    "  % ./configure --prefix=/home/gsh/opt
+   "  % make install
    """"""""""""""""""""""""""""""
    let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.h '
    "允许 gutentags 打开一些高级命令和选项(调试时用)
@@ -805,12 +806,18 @@ endif
    let g:ale_lint_on_text_changed = 'normal'
    let g:ale_lint_on_insert_leave = 1
    let g:airline#extensions#ale#enabled = 1
+   nmap <silent> <Leader>k  <Plug>(ale_previous_wrap)
+   nmap <silent> <Leader>ek <Plug>(ale_previous_wrap_error)
+   nmap <silent> <Leader>j  <Plug>(ale_next_wrap)
+   nmap <silent> <Leader>ej  <Plug>(ale_next_wrap_error)
 
    let g:ale_linters = {
          \ 'cpp': ['cppcheck'],
    	 \ 'c': ['cppcheck'],
-   	 \ 'csh': ['shell'],
-   	 \ 'bash': ['shell'],
+   	 \ 'sh': ['shellcheck'],
+   	 \ 'bash': ['shellcheck'],
+   	 \ 'dash': ['shellcheck'],
+   	 \ 'ksh': ['shellcheck'],
    	 \ }
 "  let g:ale_linters = {
 "        \ 'cpp': ['clang', 'cppcheck'],
