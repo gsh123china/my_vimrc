@@ -678,9 +678,9 @@ endif
    " UltiSnips
    """"""""""""""""""""""""""""""
    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-   let g:UltiSnipsExpandTrigger="<c-j>"
+   let g:UltiSnipsExpandTrigger="<C-j>"
    let g:UltiSnipsJumpForwardTrigger="<tab>"
-   let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+   let g:UltiSnipsJumpBackwardTrigger="<C-k>"
    " If you want :UltiSnipsEdit to split your window.
    let g:UltiSnipsEditSplit="vertical"
 
@@ -809,7 +809,7 @@ endif
    nmap <silent> <Leader>k  <Plug>(ale_previous_wrap)
    nmap <silent> <Leader>ek <Plug>(ale_previous_wrap_error)
    nmap <silent> <Leader>j  <Plug>(ale_next_wrap)
-   nmap <silent> <Leader>ej  <Plug>(ale_next_wrap_error)
+   nmap <silent> <Leader>ej <Plug>(ale_next_wrap_error)
 
    let g:ale_linters = {
          \ 'cpp': ['cppcheck'],
