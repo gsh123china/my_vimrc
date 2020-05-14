@@ -446,6 +446,7 @@ set nowritebackup
      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
      "Plug 'jiangmiao/auto-pairs'
+     Plug 'Raimondi/delimitMate'
 
      Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
@@ -838,3 +839,8 @@ endif
    set noshowmode
    let g:echodoc_enable_at_startup = 1
    "autocmd CompleteDone * echomsg string(v:completed_item) " display v:completed_item for debug echodoc
+
+   """"""""""""""""""""""""""""""
+   " delimitMate
+   """"""""""""""""""""""""""""""
+   let g:delimitMate_expand_cr = 1
