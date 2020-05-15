@@ -477,6 +477,8 @@ set nowritebackup
 
      Plug 'octol/vim-cpp-enhanced-highlight'
 
+     Plug 'mhinz/vim-startify'
+
      " Initialize plugin system
      call plug#end()
    endif
@@ -844,3 +846,47 @@ endif
    " delimitMate
    """"""""""""""""""""""""""""""
    let g:delimitMate_expand_cr = 1
+
+   """"""""""""""""""""""""""""""
+   " vim-startify
+   """"""""""""""""""""""""""""""
+   " 将session 文件全部放入 ~/.cache/vim_sessions 目录中，避免污染工程目录
+   let s:vim_sessions = expand('~/.cache/vim_sessions')
+   let g:startify_session_dir = s:vim_sessions
+   " 检测 ~/.cache/vim_sessions 不存在就新建
+   if !isdirectory(s:vim_sessions)
+        silent! call mkdir(s:vim_sessions, 'p')
+   endif
+   let g:startify_files_number = 10
+
+   " returns all modified files of the current git repo
+   " `2>/dev/null` makes the command fail quietly, so that when we are not
+   " in a git repo, the list will be empty
+   function! s:gitModified()
+       let files = systemlist('git ls-files -m 2>/dev/null')
+       return map(files, "{'line': v:val, 'path': v:val}")
+   endfunction
+
+   " same as above, but show untracked files, honouring .gitignore
+   function! s:gitUntracked()
+       let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+       return map(files, "{'line': v:val, 'path': v:val}")
+   endfunction
+
+   let g:startify_lists = [
+	  \ { 'type': 'files',     'header': ['   MRU']            },
+	  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+	  \ { 'type': 'sessions',  'header': ['   Sessions']       },
+	  \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+	  \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+	  \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+	  \ { 'type': 'commands',  'header': ['   Commands']       },
+	  \ ]
+
+   let g:startify_session_savevars = [
+          \ 'g:startify_session_savevars',
+          \ 'g:startify_session_savecmds',
+          \ 'g:random_plugin_use_feature'
+          \ ]
+
+   let g:startify_custom_header = 'startify#pad(startify#fortune#quote())'
