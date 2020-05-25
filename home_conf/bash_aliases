@@ -53,9 +53,12 @@ __prompt_command() {
 	if [ ${EXIT} != 0 ]; then
 		PS1+="${BPur}\$ ${RCol}"	  # Add red if exit code non 0
 	else
-		PS1+="${BCol}\$ ${RCol}"
+		PS1+="${RCol}\$ ${RCol}"
 	fi
 }
 
 # enable core-dump
 ulimit -c unlimited
+
+# $CDPATH
+export CDPATH=$CDPATH:~/gu_work/source
