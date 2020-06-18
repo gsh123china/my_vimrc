@@ -342,7 +342,7 @@ vmap ; :
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Text options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set expandtab	"将制表符用相应宽度的空格代替
+set expandtab	"将制表符用相应宽度的空格代替
 "set shiftwidth=8
 "set softtabstop=4
 "set tabstop=8
@@ -353,7 +353,8 @@ au FileType html,python,vim,javascript,xml setl shiftwidth=2
 "au FileType html,python,vim,javascript setl tabstop=2
 "au FileType java,c,cpp setl shiftwidth=4
 au FileType java,c,cpp,vb,dosbatch,csh,sh,perl,sql,wsh setl tabstop=4 shiftwidth=4
-au FileType c setl expandtab
+au FileType sql setl noexpandtab
+"au FileType c setl expandtab
 
 "set smarttab
 "set linebreak
@@ -846,6 +847,8 @@ endif
    " delimitMate
    """"""""""""""""""""""""""""""
    let g:delimitMate_expand_cr = 1
+   "au FileType c,cpp,java,sql let b:delimitMate_matchpairs = "(:),[:],{:}"
+   let delimitMate_matchpairs = "(:),[:],{:}"
 
    """"""""""""""""""""""""""""""
    " vim-startify
@@ -874,9 +877,9 @@ endif
    endfunction
 
    let g:startify_lists = [
-	  \ { 'type': 'files',     'header': ['   MRU']            },
-	  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
 	  \ { 'type': 'sessions',  'header': ['   Sessions']       },
+	  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+	  \ { 'type': 'files',     'header': ['   MRU']            },
 	  \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
 	  \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
 	  \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
@@ -890,3 +893,5 @@ endif
           \ ]
 
    let g:startify_custom_header = 'startify#pad(startify#fortune#quote())'
+   au FileType startify setl cul
+   nmap <leader>ts :tabnew<cr>:Startify<cr>

@@ -16,7 +16,7 @@ hash_1=$1
 shift
 hash_2=$1
 shift
-declare -a sub_dir=$@
+declare -a sub_dir=$*
 date=$(date +%Y%m%d)
 
 if [[ ! -d ".git" ]]; then
@@ -25,7 +25,7 @@ if [[ ! -d ".git" ]]; then
 fi
 
 # get changed list
-if [[ ${sub_dir[@]} -ne 0 ]]; then
+if [[ ${sub_dir[*]} -ne 0 ]]; then
 	declare -a file_list=$(git diff --name-only ${hash_1} ${hash_2} ${sub_dir}) # @todo
 else
 	declare -a file_list_1=$(git diff --name-status ${hash_1} ${hash_2} | grep -v "^A" | cut -f 2)
@@ -33,11 +33,10 @@ else
 fi
 
 #export hash_1 files
-git archive --format=tar --prefix=${hash_1}_${date}/ ${hash_1} ${file_list_1} | tar xvf -
+git archive --format=tar --prefix=${hash_1}/ ${hash_1} ${file_list_1} | tar xvf -
 
 #export hash_2 files
-git archive --format=tar --prefix=${hash_2}_${date}/ ${hash_2} ${file_list_2} | tar xvf -
+git archive --format=tar --prefix=${hash_2}/ ${hash_2} ${file_list_2} | tar xvf -
 
-#make symbolic links
-ln -s ${hash_1}_${date} ${hash_1}
-ln -s ${hash_2}_${date} ${hash_2}
+#tgz package
+tar zcvfh src_diff_${date}.tgz ${hash_1} ${hash_2}
