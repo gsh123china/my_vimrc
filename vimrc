@@ -480,6 +480,8 @@ set nowritebackup
 
      Plug 'mhinz/vim-startify'
 
+     Plug 'sheerun/vim-polyglot'
+
      " Initialize plugin system
      call plug#end()
    endif
@@ -508,6 +510,7 @@ set nowritebackup
    let Tlist_Use_Right_Window = 1
    nmap <silent> <F3> :Tlist<cr>
 
+if 1
    """"""""""""""""""""""""""""""
    " vim-gutentags
    " gutentags_plus
@@ -519,7 +522,7 @@ set nowritebackup
    "  % ./configure --prefix=/home/gsh/opt
    "  % make install
    """"""""""""""""""""""""""""""
-   let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.h '
+   let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.cc -o -name *.h '
    "允许 gutentags 打开一些高级命令和选项(调试时用)
    "let g:gutentags_define_advanced_commands = 1
    " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -559,38 +562,39 @@ set nowritebackup
      set csto=0
      set cst
    endif
-
+else
    """"""""""""""""""""""""""""""
    " cscope 15.7
    """"""""""""""""""""""""""""""
-"  set tags=./tags;,tags
-"  "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
-"  "后面一个分号代表查找不到的话向上递归到父目录，直到找到tags文件或者递归到了根目录还没找到。
-"  "逗号分隔的后半部分tags是指同时在Vim的当前目录(":pwd"命令返回的目录,可以用:cd .. 命令改变)下面查找tags文件。
-"  if has("cscope")
-"    "同时搜索ctags和cscope的标签,并且cscope优先扫描
-"    set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
-"    set csto=0
-"    set cst
-"    set csverb
-"  endif
-"  function! Mk_tag()
-"    if executable('ctags')
-"      " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
-"      silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSzl --extras=+q --output-format=e-ctags'
-"    endif
-"    if(executable('cscope') && has("cscope"))
-"      if MySys() == "windows"
-"        silent! execute '!dir /a:-d-s-h/b/s *.c,*.cpp,*.h,*.java,*.cs > cscope.files'
-"      elseif MySys() == "linux"
-"        silent! execute "!find `pwd` -type f -name '*.c' -o -name '*.cpp' -o -name '*.h' > cscope.files"
-"      endif
-"      execute 'cs kill -1'
-"      silent! execute '!cscope -bkq'
-"      execute 'cs add cscope.out'
-"    endif
-"  endfunction
-"  nmap <silent> <leader>mt :call Mk_tag()<cr>
+   set tags=./tags;,tags
+   "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
+   "后面一个分号代表查找不到的话向上递归到父目录，直到找到tags文件或者递归到了根目录还没找到。
+   "逗号分隔的后半部分tags是指同时在Vim的当前目录(":pwd"命令返回的目录,可以用:cd .. 命令改变)下面查找tags文件。
+   if has("cscope")
+     "同时搜索ctags和cscope的标签,并且cscope优先扫描
+     set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
+     set csto=0
+     set cst
+     set csverb
+   endif
+   function! Mk_tag()
+     if executable('ctags')
+       " 注意最新版 universal ctags 调用时需要加一个 --output-format=e-ctags，输出格式才和老的 exuberant ctags 兼容否则会有 windows 下路径名等小问题
+       silent! execute '!ctags -R --c++-kinds=+px --fields=+aiKSzl --extras=+q --output-format=e-ctags'
+     endif
+     if(executable('cscope') && has("cscope"))
+       if MySys() == "windows"
+         silent! execute '!dir /a:-d-s-h/b/s *.c,*.cpp,*.h,*.java,*.cs > cscope.files'
+       elseif MySys() == "linux"
+         silent! execute "!find `pwd` -type f -name '*.c' -o -name '*.cpp' -o -name '*.h' > cscope.files"
+       endif
+       execute 'cs kill -1'
+       silent! execute '!cscope -bkq'
+       execute 'cs add cscope.out'
+     endif
+   endfunction
+   nmap <silent> <leader>mt :call Mk_tag()<cr>
+endif
    """"""""""""""""""""""""""""""
    " cscope maps
    """"""""""""""""""""""""""""""

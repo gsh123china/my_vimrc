@@ -62,3 +62,6 @@ ulimit -c unlimited
 
 # $CDPATH
 export CDPATH=$CDPATH:~/gu_work/source
+
+# setup sshd
+sudo /usr/sbin/service ssh status > /dev/null || sudo /usr/sbin/service ssh start
