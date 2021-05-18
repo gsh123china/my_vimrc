@@ -32,6 +32,9 @@ if [[ ! "${PATH}" == *${HOME}/bin* ]]; then
 	export PATH="${HOME}/bin:${PATH}"
 fi
 
+# set Default Editor
+export EDITOR=vi
+
 # tmux-git
 if [[ ${TMUX} ]]; then
 	source ~/.tmux-git/tmux-git.sh

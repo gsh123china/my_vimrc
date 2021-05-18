@@ -434,8 +434,8 @@ set nowritebackup
      " - status: 'installed', 'updated', or 'unchanged'
      " - force:  set on PlugInstall! or PlugUpdate!
      if a:info.status == 'installed' || a:info.force
-       !./install.py --clang-completer		" libclang
-       "!./install.py --clangd-completer		" clangd lsp server
+       "!./install.py --clang-completer		" libclang
+       !./install.py --clangd-completer		" clangd lsp server
      endif
      endfunction
      Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
@@ -531,7 +531,7 @@ if 1
    " 所以如果你的项目不在 svn/git/hg 仓库中的话，可以在项目根目录 touch 一个空的名为 .root 的文件即可。
    "let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project', '.ycm_extra_conf.py']
    let g:gutentags_add_default_project_roots = 0
-   let g:gutentags_project_root = ['.root', '.ycm_extra_conf.py']
+   let g:gutentags_project_root = ['.root', '.ycm_extra_conf.py', '.git', '.svn']
    " 所生成的数据文件的名称
    let g:gutentags_ctags_tagfile = 'tags'
    " 同时开启 ctags 和 gtags 支持：
