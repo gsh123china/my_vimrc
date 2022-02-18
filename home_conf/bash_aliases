@@ -4,6 +4,7 @@ alias l='ls -CF'
 alias j='jobs'
 
 alias tmux='TERM=xterm-256color tmux'
+export TMUX_TMPDIR=${HOME}/.cache
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
 # Fix aliases not available when using sudo
