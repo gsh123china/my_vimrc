@@ -11,10 +11,10 @@ alias svndiff='svn diff --diff-cmd diffwrap.sh'
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo='sudo '
 
-if [[ `uname -r` == *Microsoft* ]]; then
+if [[ `uname -r` == *microsoft* ]]; then
 	#alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://127.0.0.1:10808/\""
 	#alias apt="apt -o Acquire::http::proxy=\"socks5h://127.0.0.1:10808/\""
-	:
+    :
 elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://10.192.174.125:10808/\""
 	alias apt="apt -o Acquire::http::proxy=\"socks5h://10.192.174.125:10808/\""

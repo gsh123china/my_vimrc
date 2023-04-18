@@ -754,6 +754,8 @@ endif
    " OR
    " ag (the_silver_searcher)
    " Check https://github.com/ggreer/the_silver_searcher for updates
+   " OR
+   " sudo apt install silversearcher-ag
    """"""""""""""""""""""""""""""
    let g:ackhighlight=0
    nmap <Leader>sa :Ack!<space>
