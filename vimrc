@@ -438,8 +438,8 @@ set nowritebackup
        !./install.py --clangd-completer		" clangd lsp server
      endif
      endfunction
-     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+     "Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+     "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
      " Multiple Plug commands can be written in a single line using | separators
      " ultisnips是引擎
@@ -520,6 +520,7 @@ if 1
    " Need Build and Install:
    "  % ./autogen.sh
    "  % ./configure --prefix=/home/gsh/opt
+   "  % make
    "  % make install
    """"""""""""""""""""""""""""""
    let g:gutentags_file_list_command = 'find . -type f -name *.c -o -name *.cpp -o -name *.cc -o -name *.h '
@@ -565,6 +566,7 @@ if 1
 else
    """"""""""""""""""""""""""""""
    " cscope 15.7
+   " % sudo apt install cscope
    """"""""""""""""""""""""""""""
    set tags=./tags;,tags
    "前半部分"./tags;" 代表在文件的所在目录下(不是":pwd"返回的 Vim当前目录)查找名字为"tags"的符号文件，
@@ -766,11 +768,6 @@ endif
 
    """"""""""""""""""""""""""""""
    "fzf
-   "Install
-   " git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-   " ~/.fzf/install
-   "Update
-   " cd ~/.fzf && git pull && ./install
    """"""""""""""""""""""""""""""
    "nmap <Leader>sf :Files<space>
    nmap <Leader>sf :Files<CR>
@@ -806,7 +803,7 @@ endif
    " Ale
    """"""""""""""""""""""""""""""
    " Need to install the check tool in PATH (exp:cppcheck, clang)
-   "  % sudo apt-get install clang cppcheck
+   "  % sudo apt install clang cppcheck
    """"""""""""""""""""""""""""""
    let g:ale_linters_explicit = 1
    let g:ale_completion_delay = 500
