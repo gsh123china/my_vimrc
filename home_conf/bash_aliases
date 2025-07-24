@@ -24,6 +24,15 @@ elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 	export all_proxy=$ALL_PROXY
 	#export ALL_PROXY=http://gsh:http-password@10.192.174.125:10810/
 	#export all_proxy=$ALL_PROXY
+    export NO_PROXY=localhost,127.0.0.1,::1
+    export no_proxy=$NO_PROXY
+elif [[ `uname -n` == *sdr-86*  ]]; then
+	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5://192.168.1.25:10808/\""
+	alias apt="apt -o Acquire::http::proxy=\"socks5://192.168.1.25:10808/\""
+	export ALL_PROXY=socks5://192.168.1.25:10808
+	export all_proxy=$ALL_PROXY
+    export NO_PROXY=localhost,127.0.0.1,::1
+    export no_proxy=$NO_PROXY
 fi
 
 if [[ ! "${PATH}" == *${HOME}/opt/bin* ]]; then
