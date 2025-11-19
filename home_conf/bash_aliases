@@ -7,6 +7,20 @@ alias tmux='TERM=xterm-256color tmux'
 export TMUX_TMPDIR=${HOME}/.cache
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
+# for claude code endpoint_forwarder
+# https://github.com/xinhai-ai/endpoint_forwarder/blob/master/README_CN.md
+alias cc_endpoint_forwarder='cd ~/opt/endpoint_forwarder-linux-amd64 && ./endpoint_forwarder-linux-amd64 -config config/config.yaml'
+alias up_codex='npm i -g @openai/codex@latest && codex --version'
+alias up_claude='claude update'
+alias up_ccstatusline='npm i -g ccstatusline@latest'
+alias up_droid='droid --version'
+alias up_chromedevtools='npm i -g chrome-devtools-mcp@latest'
+alias upcliall='up_codex && echo --------- && up_claude \
+    && echo --------- && up_ccstatusline && echo ccstatusline $(npm view ccstatusline version) \
+    && echo --------- && echo droid && up_droid \
+    && echo --------- && up_chromedevtools && echo chrome-devtools-mcp $(npm view chrome-devtools-mcp version) '
+
+
 # Fix aliases not available when using sudo
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo='sudo '
@@ -27,6 +41,15 @@ elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 elif [[ `uname -n` == *sdr-30*  ]]; then
 	#export ALL_PROXY=socks5h://192.168.56.1:10808
 	#export all_proxy=$ALL_PROXY
+    export NO_PROXY=localhost,127.0.0.1,::1
+    export no_proxy=$NO_PROXY
+elif [[ `uname -n` == *sdr-86*  ]]; then
+#	alias apt-get="apt-get -o Acquire::http::proxy=\"socks5h://192.168.1.25:10808/\""
+#	alias apt="apt -o Acquire::http::proxy=\"socks5h://192.168.1.25:10808/\""
+#	export ALL_PROXY=socks5h://127.0.0.1:9000
+#	export all_proxy=$ALL_PROXY
+#   export NO_PROXY=localhost,127.0.0.1,::1
+#   export no_proxy=$NO_PROXY
     :
 fi
 
@@ -81,3 +104,16 @@ export LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 eval "$(mcfly init bash)"
 
 export HOSTALIASES=${HOME}/.host_aliases
+
+# For claude-code
+if [ -f ~/.anthropic_env ]; then
+    . ~/.anthropic_env
+fi
+
+# For dirdev
+# curl -sfL https://direnv.net/install.sh | bash
+eval "$($HOME/.local/bin/direnv hook bash)"
+
+# For mise
+# curl https://mise.run | sh
+eval "$($HOME/.local/bin/mise activate bash)"
