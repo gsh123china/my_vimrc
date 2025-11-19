@@ -444,7 +444,8 @@ set nowritebackup
      " Multiple Plug commands can be written in a single line using | separators
      " ultisnips是引擎
      " 所有常用snippet都在vim-snippets里
-     Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+     "
+     "Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
      "Plug 'jiangmiao/auto-pairs'
      Plug 'Raimondi/delimitMate'
@@ -688,11 +689,11 @@ endif
    " UltiSnips
    """"""""""""""""""""""""""""""
    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-   let g:UltiSnipsExpandTrigger="<C-j>"
-   let g:UltiSnipsJumpForwardTrigger="<tab>"
-   let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-   " If you want :UltiSnipsEdit to split your window.
-   let g:UltiSnipsEditSplit="vertical"
+   "let g:UltiSnipsExpandTrigger="<C-j>"
+   "let g:UltiSnipsJumpForwardTrigger="<tab>"
+   "let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+   "" If you want :UltiSnipsEdit to split your window.
+   "let g:UltiSnipsEditSplit="vertical"
 
    """"""""""""""""""""""""""""""
    " vim-mark

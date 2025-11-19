@@ -24,6 +24,10 @@ elif [[ `uname -n` == *gsh-ubuntu*  ]]; then
 	export all_proxy=$ALL_PROXY
 	#export ALL_PROXY=http://gsh:http-password@10.192.174.125:10810/
 	#export all_proxy=$ALL_PROXY
+elif [[ `uname -n` == *sdr-30*  ]]; then
+	#export ALL_PROXY=socks5h://192.168.56.1:10808
+	#export all_proxy=$ALL_PROXY
+    :
 fi
 
 if [[ ! "${PATH}" == *${HOME}/opt/bin* ]]; then
