@@ -7,19 +7,25 @@ alias tmux='TERM=xterm-256color tmux'
 export TMUX_TMPDIR=${HOME}/.cache
 alias svndiff='svn diff --diff-cmd diffwrap.sh'
 
-# for claude code endpoint_forwarder
-# https://github.com/xinhai-ai/endpoint_forwarder/blob/master/README_CN.md
-alias cc_endpoint_forwarder='cd ~/opt/endpoint_forwarder-linux-amd64 && ./endpoint_forwarder-linux-amd64 -config config/config.yaml'
 alias up_codex='npm i -g @openai/codex@latest && codex --version'
-alias up_claude='claude update'
-alias up_ccstatusline='npm i -g ccstatusline@latest'
+alias up_claude='npm install -g @anthropic-ai/claude-code && claude --version && npm install -g @anthropic-ai/sandbox-runtime'
+#alias up_claude='claude update && npm install -g @anthropic-ai/sandbox-runtime'
+#alias up_ccstatusline='npm i -g ccstatusline@latest'
+alias up_ccstatusline='npm install -g @cometix/ccline'
 alias up_droid='droid --version'
 alias up_chromedevtools='npm i -g chrome-devtools-mcp@latest'
+alias up_auggie='npm install -g @augmentcode/auggie@latest'
+#alias up_auggie='npm install -g @augmentcode/auggie@0.19.0'
+alias up_dbhub='npm install -g @bytebase/dbhub'
+alias up_gemini='npm install -g @google/gemini-cli'
 alias upcliall='up_codex && echo --------- && up_claude \
-    && echo --------- && up_ccstatusline && echo ccstatusline $(npm view ccstatusline version) \
+    && echo --------- && up_ccstatusline && echo ccline $(npm view @cometix/ccline version) \
     && echo --------- && echo droid && up_droid \
-    && echo --------- && up_chromedevtools && echo chrome-devtools-mcp $(npm view chrome-devtools-mcp version) '
-
+    && echo --------- && up_chromedevtools && echo chrome-devtools-mcp $(npm view chrome-devtools-mcp version) \
+    && echo --------- && up_auggie && echo auggie $(npm view @augmentcode/auggie version) \
+    && echo --------- && up_dbhub && echo dbhub $(npm view @bytebase/dbhub version) \
+    && echo --------- && up_gemini && echo gemini $(npm view @google/gemini-cli version) \
+    '
 
 # Fix aliases not available when using sudo
 # https://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
