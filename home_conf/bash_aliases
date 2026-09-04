@@ -12,19 +12,19 @@ alias up_claude='npm install -g @anthropic-ai/claude-code && claude --version &&
 #alias up_claude='claude update && npm install -g @anthropic-ai/sandbox-runtime'
 #alias up_ccstatusline='npm i -g ccstatusline@latest'
 alias up_ccstatusline='npm install -g @cometix/ccline'
-alias up_droid='droid --version'
+#alias up_droid='droid --version'
 alias up_chromedevtools='npm i -g chrome-devtools-mcp@latest'
-alias up_auggie='npm install -g @augmentcode/auggie@latest'
-#alias up_auggie='npm install -g @augmentcode/auggie@0.19.0'
+#alias up_auggie='npm install -g @augmentcode/auggie@latest'
 alias up_dbhub='npm install -g @bytebase/dbhub'
-alias up_gemini='npm install -g @google/gemini-cli'
+#alias up_gemini='npm install -g @google/gemini-cli'
+alias up_fc='npm install -g @sammysnake/fast-context-mcp'
+alias up_c7='npm install -g @upstash/context7-mcp@latest'
 alias upcliall='up_codex && echo --------- && up_claude \
     && echo --------- && up_ccstatusline && echo ccline $(npm view @cometix/ccline version) \
-    && echo --------- && echo droid && up_droid \
     && echo --------- && up_chromedevtools && echo chrome-devtools-mcp $(npm view chrome-devtools-mcp version) \
-    && echo --------- && up_auggie && echo auggie $(npm view @augmentcode/auggie version) \
     && echo --------- && up_dbhub && echo dbhub $(npm view @bytebase/dbhub version) \
-    && echo --------- && up_gemini && echo gemini $(npm view @google/gemini-cli version) \
+    && echo --------- && up_fc && echo fastcontext $(npm view @sammysnake/fast-context-mcp version) \
+    && echo --------- && up_c7 && echo context7 $(npm view @upstash/context7-mcp version) \
     '
 
 # Fix aliases not available when using sudo
